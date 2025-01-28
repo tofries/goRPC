@@ -12,5 +12,8 @@
         <module name="example-consumer" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="wa" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
