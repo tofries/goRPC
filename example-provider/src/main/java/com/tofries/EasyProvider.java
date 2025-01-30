@@ -10,6 +10,6 @@ public class EasyProvider {
         LocalRegistry.register(UserService.class.getName(),UserServiceImpl.class);
 
         HttpServer server = new VertxHttpServer();
-        server.doStart(8080);
+        server.doStart(RpcApplication.getRpcConfig().getServerPort());
     }
 }

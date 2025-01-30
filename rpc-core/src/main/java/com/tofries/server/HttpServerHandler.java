@@ -1,6 +1,6 @@
 package com.tofries.server;
 
-import com.tofries.RpcRequest;
+import com.tofries.model.RpcRequest;
 import com.tofries.Serializer;
 import com.tofries.SerializerImpl;
 import com.tofries.model.RpcResponse;

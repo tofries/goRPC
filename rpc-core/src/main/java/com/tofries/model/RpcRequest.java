@@ -1,4 +1,4 @@
-package com.tofries;
+package com.tofries.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
