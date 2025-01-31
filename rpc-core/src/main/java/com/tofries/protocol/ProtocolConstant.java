@@ -9,7 +9,7 @@ public class ProtocolConstant {
     /**
      * 消息头长度
      */
-    public int MESSAGE_HEADER_LENGTH = 17;
+    public static int MESSAGE_HEADER_LENGTH = 17;
 
     /**
      * 协议魔数
