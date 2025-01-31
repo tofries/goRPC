@@ -32,7 +32,11 @@ public class ServiceProxyFactory {
         return (T) Proxy.newProxyInstance(
                 serviceClass.getClassLoader(),
                 new Class[]{serviceClass},
-                new ServiceProxy());
+                new TCPServiceProxy());
+//        return (T) Proxy.newProxyInstance(
+//                serviceClass.getClassLoader(),
+//                new Class[]{serviceClass},
+//                new ServiceProxy());
     }
 
     /**

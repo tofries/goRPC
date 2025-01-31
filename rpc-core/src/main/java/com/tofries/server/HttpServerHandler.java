@@ -1,8 +1,8 @@
 package com.tofries.server;
 
 import com.tofries.model.RpcRequest;
-import com.tofries.Serializer;
-import com.tofries.SerializerImpl;
+import com.tofries.serializer.Serializer;
+import com.tofries.serializer.SerializerImpl;
 import com.tofries.model.RpcResponse;
 import com.tofries.registry.LocalRegistry;
 import io.vertx.core.Handler;

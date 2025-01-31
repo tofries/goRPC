@@ -1,4 +1,4 @@
-package com.tofries;
+package com.tofries.serializer;
 
 import java.io.IOException;
 

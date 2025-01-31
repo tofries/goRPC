@@ -1,6 +1,4 @@
-package com.tofries;
-
-import com.tofries.Serializer;
+package com.tofries.serializer;
 
 import java.io.*;
 

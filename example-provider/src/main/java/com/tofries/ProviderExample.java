@@ -10,16 +10,14 @@ import com.tofries.registry.Registry;
 import com.tofries.registry.RegistryFactory;
 import com.tofries.server.HttpServer;
 import com.tofries.server.VertxHttpServer;
+import com.tofries.server.VertxTcpServer;
 import com.tofries.service.UserService;
 import com.tofries.utils.*;
 
 
 /**
  * 服务提供者示例
- *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @learn <a href="https://codefather.cn">编程宝典</a>
- * @from <a href="https://yupi.icu">编程导航知识星球</a>
+
  */
 public class ProviderExample {
 
@@ -45,8 +43,8 @@ public class ProviderExample {
             throw new RuntimeException(e);
         }
 
-        // 启动 web 服务
-        HttpServer httpServer = new VertxHttpServer();
-        httpServer.doStart(RpcApplication.getRpcConfig().getServerPort());
+        // 启动 TCP 服务
+        VertxTcpServer vertxTcpServer = new VertxTcpServer();
+        vertxTcpServer.doStart(8080);
     }
 }
