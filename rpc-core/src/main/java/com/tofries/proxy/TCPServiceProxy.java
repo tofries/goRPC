@@ -7,6 +7,10 @@ import cn.hutool.http.HttpResponse;
 import com.tofries.RpcApplication;
 import com.tofries.config.RpcConfig;
 import com.tofries.constant.RpcConstant;
+import com.tofries.fault.retry.RetryStrategy;
+import com.tofries.fault.retry.RetryStrategyFactory;
+import com.tofries.loadbalancer.LoadBalancer;
+import com.tofries.loadbalancer.LoadBalancerFactory;
 import com.tofries.model.RpcRequest;
 import com.tofries.model.RpcResponse;
 import com.tofries.model.ServiceMetaInfo;
@@ -26,7 +30,9 @@ import io.vertx.core.net.SocketAddress;
 import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CountDownLatch;
 
@@ -71,9 +77,20 @@ public class TCPServiceProxy implements InvocationHandler {
             if (CollUtil.isEmpty(serviceMetaInfoList)) {
                 throw new RuntimeException("暂无服务地址");
             }
-            ServiceMetaInfo selectedServiceMetaInfo = serviceMetaInfoList.get(0);
+            // 负载均衡
+            LoadBalancer loadBalancer = LoadBalancerFactory.getInstance("a");
+            // 将调用方法名（请求路径）作为负载均衡参数
+            Map<String, Object> requestParams = new HashMap<>();
+            requestParams.put("methodName", rpcRequest.getMethodName());
+            ServiceMetaInfo selectedServiceMetaInfo = loadBalancer.select(requestParams, serviceMetaInfoList);
+
             // 发送 TCP 请求
-            RpcResponse rpcResponse = VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo);
+            // 使用重试机制
+            RetryStrategy retryStrategy = RetryStrategyFactory.getInstance(rpcConfig.getRetryStrategy());
+            RpcResponse rpcResponse = retryStrategy.doRetry(() ->
+                    VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo)
+            );
+
             return rpcResponse.getData();
         } catch (Exception e) {
             throw new RuntimeException("调用失败");
